@@ -97,7 +97,7 @@ const devCard = [
     description: "현재 개발 중인 프로젝트",
     overview: [],
     tasks: [],
-    tech: ["TypeScript", "React"],
+    tech: ["TypeScript", "React", "Node.js", "Cloudflare"],
     status: "개발중",
     githubUrl: null,
     demoUrl: null,

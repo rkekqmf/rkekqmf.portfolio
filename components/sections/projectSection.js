@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ProjectsItem from "../projects/projectsItem";
 import { projectData } from "../../data/projectData";
@@ -12,9 +12,28 @@ function isMetaOverviewLine(line) {
   return false;
 }
 
+const INITIAL_COUNT = 4;
+
 const ProjectSection = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [shakingCardId, setShakingCardId] = useState(null);
+  const [showAll, setShowAll] = useState(false);
+  const [expandHeight, setExpandHeight] = useState(0);
+  const expandContentRef = useRef(null);
+  const initialProjects = projectData.slice(0, INITIAL_COUNT);
+  const restProjects = projectData.slice(INITIAL_COUNT);
+  const hasMore = projectData.length > INITIAL_COUNT;
+
+  useEffect(() => {
+    if (!showAll || !hasMore) return;
+    const raf1 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = expandContentRef.current;
+        if (el) setExpandHeight(el.scrollHeight + 8);
+      });
+    });
+    return () => cancelAnimationFrame(raf1);
+  }, [showAll, hasMore]);
 
   const handleCardClick = useCallback((project) => {
     if (project.status === "개발중") {
@@ -40,7 +59,7 @@ const ProjectSection = () => {
       <Title>프로젝트</Title>
       <SubTitle>직접 참여한 프로젝트 목록입니다.</SubTitle>
       <Grid>
-        {projectData.map((project) => (
+        {initialProjects.map((project) => (
           <ProjectsItem
             key={project.id}
             project={project}
@@ -48,6 +67,27 @@ const ProjectSection = () => {
             shakingCardId={shakingCardId}
           />
         ))}
+        {hasMore && (
+          <ExpandableCell>
+            <ExpandableInner $open={showAll} $contentHeight={expandHeight}>
+              <ExpandableContent ref={expandContentRef}>
+                <InnerGrid>
+                  {restProjects.map((project) => (
+                    <ProjectsItem
+                      key={project.id}
+                      project={project}
+                      onClick={handleCardClick}
+                      shakingCardId={shakingCardId}
+                    />
+                  ))}
+                </InnerGrid>
+              </ExpandableContent>
+            </ExpandableInner>
+            <MoreButton type="button" onClick={() => setShowAll((v) => !v)}>
+              {showAll ? "접기" : "더보기"}
+            </MoreButton>
+          </ExpandableCell>
+        )}
       </Grid>
 
       {selectedProject && (
@@ -184,6 +224,57 @@ const Grid = styled.div`
   @media (min-width: 641px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+  }
+`;
+
+const ExpandableCell = styled.div`
+  grid-column: 1 / -1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ExpandableInner = styled.div`
+  align-self: stretch;
+  max-height: ${({ $open, $contentHeight }) =>
+    $open ? `${$contentHeight ?? 0}px` : "0"};
+  overflow: hidden;
+  overflow-x: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  contain: layout;
+  will-change: max-height;
+`;
+
+const ExpandableContent = styled.div``;
+
+const InnerGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+
+  @media (min-width: 641px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const MoreButton = styled.button`
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  font-size: 1.4rem;
+  color: #3586ff;
+  background: transparent;
+  border: 1px solid #3586ff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background: #3586ff;
+    color: #fff;
   }
 `;
 
