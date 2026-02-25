@@ -8,10 +8,3 @@ export const darkTheme = {
   shadowColor: "#282828",
   pallete,
 };
-
-export const lightTheme = {
-  bgColor: "#fff",
-  fontColor: "#333",
-  shadowColor: "#e8e8e8",
-  pallete,
-};

@@ -7,10 +7,9 @@ export const Container = styled.main`
   align-items: ${({ alignItems }) => alignItems};
   column-gap: ${({ columnGap }) => columnGap};
   color: ${({ color }) => color};
-  ${({ theme }) => theme.xl`
-    flex-direction: ${({ media }) => media.flexDirection};
-    row-gap: ${({ media }) => media.rowGap};
-  `}
+  width: min(980px, 100%);
+  row-gap: 2.5em;
+  padding-inline: 0.4em;
 `;
 
 Container.defaultProps = {
@@ -20,17 +19,14 @@ Container.defaultProps = {
   alignItems: "center",
   columnGap: "10em",
   media: {
-    flexDirection: "row",
+    flexDirection: "column",
     rowGap: "2em",
   },
 };
 
 export const Contact = styled.div`
   text-align: center;
-  margin-bottom: 5em;
-  ${({ theme }) => theme.xl`
-    margin-bottom: 0;
-  `}
+  margin-bottom: 2em;
 
   a {
     margin: 0 0.5em;
@@ -47,7 +43,7 @@ export const Contact = styled.div`
 
 export const ImageBox = styled.div`
   position: relative;
-  margin-top: 10em;
+  margin-top: 2em;
   margin-bottom: 3em;
   border-radius: 50%;
   box-shadow: 0 0 3px 3px ${({ theme }) => theme.shadowColor};
@@ -55,8 +51,6 @@ export const ImageBox = styled.div`
   height: 15rem;
   overflow: hidden;
   ${({ theme }) => theme.xl`
-    margin-top: 0;
-    margin-bottom: 5em;
     width: 25rem;
     height: 25rem;
   `}
@@ -66,10 +60,8 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 4em;
-  ${({ theme }) => theme.xl`
-    align-items: flex-start;
-  `}
+  row-gap: 2.2em;
+  width: min(720px, 100%);
 
   a {
     padding: 0.5em 1em;
@@ -84,24 +76,22 @@ export const Content = styled.div`
 `;
 
 export const Title = styled.p`
-  font-family: Nanum Gothic, sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.2rem;
   word-spacing: 0.1em;
   letter-spacing: 0.01em;
   white-space: pre-line;
+  text-align: center;
   ${({ theme }) => theme.xl`
     font-size: 4.5rem;
   `}
 `;
 
 export const Comment = styled(Title)`
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.45rem;
   line-height: 1.5em;
   text-align: center;
+  word-break: keep-all;
   ${({ theme }) => theme.xl`
     font-size: 2.2rem;
-    text-align: start;
   `}
 `;

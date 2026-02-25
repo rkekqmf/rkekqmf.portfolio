@@ -5,50 +5,45 @@ export const Container = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  column-gap: 7em;
+  width: min(980px, 100%);
   ${({ theme }) => theme.xl`
-    flex-direction:row;
+    column-gap: 7em;
+    row-gap: 0;
   `};
 `;
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 1em;
+  align-items: center;
+  row-gap: 1.2em;
+  width: min(720px, 100%);
 
   p {
-    font-size: 2.5rem;
-    font-weight: 600;
+    font-size: 3.2rem;
     line-height: 1.3em;
     white-space: pre-line;
     text-align: center;
-    ${({ theme }) => theme.xl`
-      font-size: 4rem;
-      text-align: start;
+    word-break: keep-all;
+
+    .name {
+      color: #3586ff;
+    }
+  }
+
+  small {
+    font-size: 1.35rem;
+    opacity: 0.8;
+    text-align: center;
+    line-height: 1.4;
+    word-break: keep-all;
+    ${({ theme }) => theme.sm`
+      font-size: 1.5rem;
     `};
   }
 
   div {
-    display: grid;
-    justify-content: center;
-    justify-items: center;
-    ${({ theme }) => theme.xl`
-      display: flex;
-      justify-content: flex-start;
-      column-gap: 1.5em;
-    `};
-  }
-
-  a {
-    display: block;
-    margin-top: 1em;
-    padding: 0.7em 1em;
-    border-radius: 5px;
-    width: fit-content;
-    font-size: 1.8rem;
-    box-shadow: 0 0 3px 2px ${({ theme }) => theme.shadowColor};
-    ${({ theme }) => theme.xl`
-      font-size: 2.2rem;
-    `};
+    margin-top: 0.8em;
+    width: 100%;
   }
 `;

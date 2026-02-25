@@ -1,9 +1,10 @@
-import axios from "axios";
 import styled from "styled-components";
 import ProjectsItem from "../components/projects/projectsItem";
-import { DATABASE_ID, TOKEN } from "../config";
+import { projectData } from "../data/projectData";
 
-const Project = ({ projects }) => {
+const Project = () => {
+  const projects = projectData;
+
   return (
     <Container>
       <Title>
@@ -67,29 +68,3 @@ const ProjectsList = styled.div`
 `;
 
 export default Project;
-
-export const getStaticProps = async () => {
-  try {
-    const options = {
-      method: "POST",
-      url: `https://api.notion.com/v1/databases/${DATABASE_ID}/query`,
-      headers: {
-        Accept: "application/json",
-        "Notion-Version": "2022-02-22",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${TOKEN}`,
-      },
-      data: { sorts: [{ property: "period", direction: "ascending" }] },
-    };
-
-    const response = await axios.request(options);
-
-    return {
-      props: {
-        projects: response.data.results,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-  }
-};

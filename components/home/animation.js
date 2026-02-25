@@ -1,9 +1,21 @@
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import lottieJson from "/public/animation.json";
 
-const Lottie = dynamic(() => import("react-lottie-player"), { ssr: false });
-
 const Animation = () => {
+  const [Lottie, setLottie] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    import("react-lottie-player").then((module) => {
+      if (mounted) setLottie(() => module.default);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!Lottie) return null;
+
   return (
     <Lottie loop animationData={lottieJson} play style={{ width: "32rem", height: "32rem" }} />
   );

@@ -1,28 +1,31 @@
-import Link from "next/link";
-import Animation from "../components/home/animation";
-import { Container, AnimationWrap, Content } from "../styles/indexStyle";
-import { comment } from "../data/indexData";
+import HomeSection from "../components/sections/homeSection";
+import TechSection from "../components/sections/techSection";
+import CareerSection from "../components/sections/careerSection";
+import ProjectSection from "../components/sections/projectSection";
+import ProfileIntroSection from "../components/sections/profileIntroSection";
+import Footer from "../components/layout/Footer";
+import { OnePageContainer, Section } from "../styles/onePageStyle";
 
 const Home = () => {
   return (
-    <Container>
-      <Animation />
-      <Content>
-        <p>{comment}</p>
-        <div>
-          <Link href="/profile">
-            <a>
-              <span>프로필 보러가기</span>
-            </a>
-          </Link>
-          <Link href="/project">
-            <a>
-              <span>프로젝트 보러가기</span>
-            </a>
-          </Link>
-        </div>
-      </Content>
-    </Container>
+    <OnePageContainer>
+      <Section id="home" $isHome>
+        <HomeSection />
+      </Section>
+      <Section id="tech">
+        <TechSection />
+      </Section>
+      <Section id="career">
+        <CareerSection />
+      </Section>
+      <Section id="project">
+        <ProjectSection />
+      </Section>
+      <Section id="profile-intro">
+        <ProfileIntroSection />
+      </Section>
+      <Footer />
+    </OnePageContainer>
   );
 };
 

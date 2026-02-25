@@ -1,174 +1,259 @@
-import Image from "next/image";
-import React, { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
-import SvgController from "../common/svgController";
+import styled from "styled-components";
+import { techData } from "../../data/techData";
 
-const TAG_COLOR = {
-  React: "#61DAFB",
-  "Next.js": "#7f7f7f",
-  Sass: "#CC6699",
-  "Styled Components": "#DB7093",
-  "KakaoMap API": "#FFCD00",
-  Axios: "#ae6afc",
-  "Notion API": "#7f7f7f",
-  "Riot API": "#D32936",
-  Redux: "#ae6afc",
-};
+const techIconMap = {};
+techData.forEach(({ items }) => items.forEach(({ name, icon }) => { techIconMap[name] = icon; }));
+Object.assign(techIconMap, {
+  HTML: "https://cdn.simpleicons.org/html5/E34F26",
+  CSS: "https://cdn.jsdelivr.net/npm/simple-icons@9.21.0/icons/css3.svg",
+  Sass: "https://cdn.simpleicons.org/sass/CC6699",
+  Axios: "https://cdn.simpleicons.org/axios/5A29E4",
+  SvelteKit: "https://cdn.simpleicons.org/svelte/FF3E00",
+  Javascript: "https://cdn.simpleicons.org/javascript/F7DF1E",
+});
 
-const ProjectsItem = ({ project }) => {
-  const themeContext = useContext(ThemeContext);
-
-  const projectCover = project.cover.file.url;
-  const projectTitle = project.properties.name.title[0].plain_text;
-  const projectIcon = project.icon.emoji;
-  const projectTag = project.properties.tag.multi_select;
-  const projectDescription = project.properties.description.rich_text[0].plain_text;
-  const projectCategory = project.properties.category.rich_text[0].plain_text;
-  const projectGithub = project.properties.github.rich_text[0]?.plain_text;
-  const projectUrl = project.url.substring(21);
-  const projectStart = project.properties.period.date.start;
-  const projectEnd = project.properties.period.date.end;
-  const getPeriod = (start, end) => {
-    if (end === null) return "진행중";
-
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const projectPeriod = endDate.getTime() - startDate.getTime();
-
-    return Math.abs(projectPeriod / (1000 * 60 * 60 * 24)) + "일";
-  };
+const ProjectsItem = ({ project, onClick, shakingCardId }) => {
+  const { title, category, period, duration, description, tech, status, live } = project;
+  const isDev = status === "개발중";
+  const isSideOnly = category === "사이드 프로젝트" && !isDev;
+  const isShaking = isDev && shakingCardId === project.id;
 
   return (
-    <Container>
-      <ImageBox>
-        <Image src={projectCover} layout="fill" objectFit="fill" alt="projectCover" />
-      </ImageBox>
-      <Property>
-        <Title>
-          <Name>
-            <Text fontSize={2.2} marginRight={0.5}>
-              {projectIcon}
-            </Text>
-            <Text fontSize={2.2} fontWeight={800} opacity={0.8}>
-              {projectTitle + " (" + getPeriod(projectStart, projectEnd) + ")"}
-            </Text>
-          </Name>
-          <Link>
-            {projectGithub !== undefined && (
-              <Text
-                as="a"
-                href={projectGithub}
-                target="_blank"
-                rel="noreferrer"
-                marginRight={1}
-                fontSize={1.5}
-                cursor="pointer"
-              >
-                <SvgController name="github" width={30} height={30} fill={themeContext.fontColor} />
-              </Text>
-            )}
-            <Text
-              as="a"
-              href={"https://rkekqmf.notion.site" + projectUrl}
-              target="_blank"
-              rel="noreferrer"
-              fontSize={1.5}
-              cursor="pointer"
-            >
-              <SvgController name="notion" width={30} height={30} fill={themeContext.fontColor} />
-            </Text>
-          </Link>
-        </Title>
-        <Text fontWeight={700} fontSize={1.8}>
-          {projectCategory}
-        </Text>
-        <Text fontWeight={400} fontSize={1.6} marginTop={1} marginBottom={1} lineHeight={1.5}>
-          {projectDescription}
-        </Text>
-        {projectTag.map((tag) => (
-          <Text
-            key={tag.id}
-            display="inline-block"
-            marginRight={1}
-            marginTop={1}
-            padding={"0.3em 1em"}
-            color={TAG_COLOR[tag.name]}
-            fontWeight={700}
-            fontSize={1.5}
-            boxShadow={"0 0 3px 1px" + themeContext.shadowColor}
-          >
-            {tag.name}
-          </Text>
-        ))}
-        <Text />
-      </Property>
-    </Container>
+    <Card
+      $isDev={isDev}
+      $isSideOnly={isSideOnly}
+      $shaking={isShaking}
+      role={isDev ? null : "button"}
+      tabIndex={isDev ? null : 0}
+      onClick={() => onClick?.(project)}
+      onKeyDown={
+        isDev
+          ? undefined
+          : (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick?.(project);
+              }
+            }
+      }
+    >
+      {live && (
+        <LiveBadge title="실제 서비스 중">
+          <LiveIcon aria-hidden="true" />
+          <span>실제 서비스</span>
+        </LiveBadge>
+      )}
+      {isDev && (
+        <ServicePlannedBadge title="실제 서비스 예정">
+          <ServicePlannedDot aria-hidden="true" />
+          <span>실제 서비스예정</span>
+        </ServicePlannedBadge>
+      )}
+      <Category>{category}</Category>
+      <Title>{title}</Title>
+      <Period>{duration ?? period}</Period>
+      {description && <Description $isDev={isDev}>{description}</Description>}
+      {tech?.length > 0 && (
+        <TechList>
+          {tech.flatMap((t) => (t.includes(" / ") ? t.split(" / ").map((p) => p.trim()) : [t])).map((name) => {
+            const iconUrl = techIconMap[name];
+            return iconUrl ? (
+              <TechIcon key={name} title={name} $isCss={name === "CSS"}>
+                <img src={iconUrl} alt="" loading="lazy" />
+              </TechIcon>
+            ) : (
+              <TechTag key={name}>{name}</TechTag>
+            );
+          })}
+        </TechList>
+      )}
+    </Card>
   );
 };
 
-const Container = styled.div`
-  border-radius: 5px;
-  overflow: hidden;
-  transition: 0.5s;
-  &:hover {
-    transform: none;
-    box-shadow: none;
-    ${({ theme }) => theme.lg`
-    transform: scale3d(1.1, 1.1, 1.1);
-    box-shadow: 0 0 3px 2px ${({ theme }) => theme.shadowColor};
-  `}
-  }
-`;
-
-const ImageBox = styled.div`
+const Card = styled.article`
   position: relative;
-  width: 100%;
-  height: 30vh;
-`;
-
-const Property = styled.div`
-  padding: 2em 1.3em;
-`;
-
-const Title = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 3em;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3em;
-  ${({ theme }) => theme.sm`
-  flex-direction: row;
+  padding: 1.75rem 1.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(102, 102, 102, 0.25);
+  background: ${({ theme }) => theme.bgColor};
+  cursor: ${({ $isDev }) => ($isDev ? "default" : "pointer")};
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  ${({ $isDev, $isSideOnly }) =>
+    $isDev
+      ? `
+  &:hover {
+    border-color: rgba(200, 70, 70, 0.85);
+  }
+  &:hover ${Title} {
+    color: rgba(200, 70, 70, 0.95);
+  }
+  `
+      : $isSideOnly
+        ? `
+  &:hover {
+    border-color: rgba(102, 102, 102, 0.25);
+  }
+  &:focus-visible {
+    outline: 2px solid rgba(102, 102, 102, 0.4);
+    outline-offset: 2px;
+  }
+  `
+        : `
+  &:hover {
+    border-color: rgba(53, 134, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+  &:hover ${Title} {
+    color: #3586ff;
+  }
+  &:focus-visible {
+    outline: 2px solid #3586ff;
+    outline-offset: 2px;
+  }
+  `}
+
+  ${({ $shaking }) =>
+    $shaking &&
+    `
+  animation: shake 0.45s ease-in-out;
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-6px); }
+    30% { transform: translateX(6px); }
+    45% { transform: translateX(-4px); }
+    60% { transform: translateX(4px); }
+    75% { transform: translateX(-2px); }
+    90% { transform: translateX(2px); }
+  }
   `}
 `;
 
-const Name = styled.div`
-  display: flex;
+const LiveBadge = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #3586ff;
+  opacity: 0.95;
 `;
 
-const Link = styled(Name)``;
+const LiveIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #3586ff;
+  flex-shrink: 0;
+`;
 
-const Text = styled.p`
-  display: ${({ display }) => display};
-  column-gap: ${({ gap }) => gap}em;
-  margin-top: ${({ marginTop }) => marginTop}em;
-  margin-right: ${({ marginRight }) => marginRight}em;
-  margin-bottom: ${({ marginBottom }) => marginBottom}em;
-  padding: ${({ padding }) => padding};
-  border-radius: 5px;
-  box-shadow: ${({ boxShadow }) => boxShadow};
-  background: ${({ background }) => background};
-  width: fit-content;
-  font-family: Nanum Gothic, sans-serif;
-  font-weight: ${({ fontWeight }) => fontWeight};
-  font-size: ${({ fontSize }) => fontSize}rem;
-  color: ${({ color }) => color};
-  word-spacing: 0.05em;
-  letter-spacing: 0.02em;
-  line-height: ${({ lineHeight }) => lineHeight}em;
-  &:hover {
-    cursor: ${({ cursor }) => cursor};
+const ServicePlannedBadge = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #c84646;
+  opacity: 0.95;
+`;
+
+const ServicePlannedDot = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #c84646;
+  flex-shrink: 0;
+`;
+
+const Category = styled.span`
+  display: inline-block;
+  font-size: 1.15rem;
+  color: ${({ theme }) => theme.fontColor};
+  opacity: 0.75;
+  margin-bottom: 0.5rem;
+`;
+
+const Title = styled.h3`
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.fontColor};
+  margin: 0 0 0.35rem 0;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+`;
+
+const Period = styled.span`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.fontColor};
+  opacity: 0.7;
+  margin-bottom: 0.85rem;
+`;
+
+const Description = styled.p`
+  font-size: 1.3rem;
+  line-height: 1.55;
+  color: ${({ theme, $isDev }) => ($isDev ? "rgba(200, 70, 70, 0.95)" : theme.fontColor)};
+  opacity: 0.9;
+  margin: 0 0 1rem 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+`;
+
+const TechList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+`;
+
+const TechIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 6px;
+  background: rgba(102, 102, 102, 0.25);
+
+  img {
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+    display: block;
   }
+
+  /* CSS 아이콘 색상 (jsdelivr SVG 검정 → #1572B6) */
+  ${({ $isCss }) =>
+    $isCss &&
+    `
+    img {
+      filter: brightness(0) saturate(100%) invert(32%) sepia(98%) saturate(500%) hue-rotate(195deg);
+    }
+  `}
 `;
+
+const TechTag = styled.span`
+  font-size: 1.1rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(102, 102, 102, 0.25);
+  color: ${({ theme }) => theme.fontColor};
+  opacity: 0.9;
+`;
+
 export default ProjectsItem;
