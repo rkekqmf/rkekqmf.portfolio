@@ -3,7 +3,7 @@ import TechSection from "../components/sections/techSection";
 import CareerSection from "../components/sections/careerSection";
 import ProjectSection from "../components/sections/projectSection";
 import ProfileIntroSection from "../components/sections/profileIntroSection";
-import Footer from "../components/layout/Footer";
+import Footer from "../components/layout/footer";
 import { OnePageContainer, Section } from "../styles/onePageStyle";
 
 const Home = () => {
