@@ -193,6 +193,10 @@ const SubTitle = styled.p`
   color: ${({ theme }) => theme.fontColor};
   opacity: 0.75;
   margin: 0 0 3.5rem 0;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+  }
 `;
 
 const List = styled.div`

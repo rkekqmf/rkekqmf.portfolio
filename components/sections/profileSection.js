@@ -49,7 +49,7 @@ const Container = styled.div`
   max-width: 720px;
   margin: 0 auto;
   gap: 2.5rem;
-  padding: 0 0.5rem;
+  padding: 3.5rem 0.5rem 0;
   box-sizing: border-box;
 `;
 

@@ -213,6 +213,10 @@ const SubTitle = styled.p`
   color: ${({ theme }) => theme.fontColor};
   opacity: 0.75;
   margin: 0 0 3.5rem 0;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+  }
 `;
 
 const Grid = styled.div`
@@ -220,6 +224,7 @@ const Grid = styled.div`
   grid-template-columns: 1fr;
   gap: 1.5rem;
   width: 100%;
+  margin-top: 3.5rem;
 
   @media (min-width: 641px) {
     grid-template-columns: repeat(2, 1fr);
@@ -270,9 +275,16 @@ const MoreButton = styled.button`
   border: 1px solid #3586ff;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 
-  &:hover {
+  @media (hover: hover) {
+    &:hover {
+      background: #3586ff;
+      color: #fff;
+    }
+  }
+
+  &:active {
     background: #3586ff;
     color: #fff;
   }

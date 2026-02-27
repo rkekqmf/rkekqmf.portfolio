@@ -50,6 +50,10 @@ const SubTitle = styled.p`
   color: ${({ theme }) => theme.fontColor};
   opacity: 0.75;
   margin: 0 0 3.5rem 0;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+  }
 `;
 
 const Rows = styled.div`
@@ -67,13 +71,14 @@ const Row = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  padding: 1.25rem 0;
+  padding: 3.5rem 0 1.25rem;
   border-bottom: 1px solid rgba(102, 102, 102, 0.35);
   width: 100%;
   min-width: 0;
 
   &:last-child {
     border-bottom: none;
+    padding-bottom: 0;
   }
 `;
 

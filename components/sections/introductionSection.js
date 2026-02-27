@@ -40,6 +40,10 @@ const SubTitle = styled.p`
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 1.4rem;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+  }
 `;
 
 const Content = styled.div`
