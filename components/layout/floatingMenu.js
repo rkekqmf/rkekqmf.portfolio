@@ -116,6 +116,7 @@ const Container = styled.nav`
   transform: ${({ $isPinned }) => ($isPinned ? "translateX(-50%)" : "none")};
   display: inline-flex;
   width: fit-content;
+  max-width: calc(100vw - 2rem);
   height: 4.4rem;
   box-sizing: border-box;
   z-index: 20;
@@ -132,12 +133,14 @@ const Container = styled.nav`
     align-items: center;
     gap: 0.7em;
     height: 100%;
+    min-width: 0;
   }
 
   li {
     height: 3rem;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
   }
 
   a {
@@ -151,6 +154,7 @@ const Container = styled.nav`
     line-height: 1;
     color: #fff;
     opacity: 0.9;
+    white-space: nowrap;
 
     &:hover {
       opacity: 1;
@@ -160,6 +164,34 @@ const Container = styled.nav`
       background: #3586ff;
       color: #fff;
       opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.5rem 0.6rem;
+    height: 3.8rem;
+    max-width: calc(100vw - 1.5rem);
+
+    ul {
+      gap: 0.4em;
+      overflow-x: auto;
+      overflow-y: hidden;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    ul::-webkit-scrollbar {
+      display: none;
+    }
+
+    a {
+      font-size: 1rem;
+      height: 2.6rem;
+      padding: 0 0.6rem;
+    }
+
+    li {
+      height: 2.6rem;
     }
   }
 

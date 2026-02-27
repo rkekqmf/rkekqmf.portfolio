@@ -4,9 +4,9 @@ export const profileData = {
   age: "1994년생",
   contact: "010-6336-7941",
   email: "rkekqmf@gmail.com",
-  desiredSalary: "4200만 원 / 협의 가능",
+  desiredSalary: "3900만원 / 협의 가능",
   workConditions: "정규직 / 계약직 / 프리랜서",
-  workLocation: "대구 전 지역 / 재택·원격 가능",
+  workLocation: "서울 · 수원 · 대구 / 재택·원격",
   intro: [
     "사용자 경험을 중요시 하며, 성능 개선을 위해 노력합니다.",
     "문제를 작게 나누어 해결하는 것을 선호하며, 원인 파악과 개선에 집중합니다.",

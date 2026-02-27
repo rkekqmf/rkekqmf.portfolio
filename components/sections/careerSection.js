@@ -218,9 +218,11 @@ const EntryInner = styled.div`
   align-items: flex-start;
   text-align: left;
 
-  @media (max-width: 640px) {
+  @media (max-width: 1280px) {
     flex-direction: column;
     gap: 1.25rem;
+    align-items: center;
+    text-align: center;
   }
 `;
 
@@ -231,6 +233,11 @@ const Timeline = styled.div`
   align-items: flex-start;
   gap: 0.6rem;
   min-width: 11rem;
+
+  @media (max-width: 1280px) {
+    align-items: center;
+    min-width: 0;
+  }
 `;
 
 const TimelinePeriod = styled.span`
@@ -243,6 +250,10 @@ const TimelineDuration = styled.span`
   color: ${({ theme }) => theme.fontColor};
   opacity: 0.7;
   align-self: flex-end;
+
+  @media (max-width: 1280px) {
+    align-self: center;
+  }
 `;
 
 const Content = styled.div`
@@ -251,6 +262,11 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+
+  @media (max-width: 1280px) {
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const Company = styled.span`
@@ -273,6 +289,10 @@ const TechRow = styled.div`
   align-items: center;
   gap: 0.85rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 1280px) {
+    justify-content: center;
+  }
 `;
 
 const SkillLabel = styled.span`
@@ -333,6 +353,11 @@ const ProjectList = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 0.75rem;
+  width: 100%;
+
+  @media (max-width: 1280px) {
+    align-items: center;
+  }
 `;
 
 const ProjectBlock = styled.div`
@@ -340,6 +365,11 @@ const ProjectBlock = styled.div`
   flex-direction: column;
   gap: 0;
   contain: layout;
+  width: 100%;
+
+  @media (max-width: 1280px) {
+    align-items: center;
+  }
 `;
 
 const ProjectRow = styled.div`
@@ -349,6 +379,10 @@ const ProjectRow = styled.div`
   cursor: pointer;
   padding: 0.5rem 0;
   transition: opacity 0.2s ease;
+
+  @media (max-width: 1280px) {
+    align-self: center;
+  }
 
   &:hover {
     opacity: 0.9;
@@ -398,6 +432,20 @@ const ProjectDetailContent = styled.div`
   padding-left: ${({ $showBorder }) => ($showBorder ? "2.5rem" : "0")};
   margin-left: ${({ $showBorder }) => ($showBorder ? "0.1rem" : "0")};
   min-width: 0;
+
+  @media (max-width: 1280px) {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    text-align: center;
+
+    ul {
+      margin-left: 0;
+      list-style-position: inside;
+      text-align: left;
+      display: inline-block;
+    }
+  }
 `;
 
 const Block = styled.div`

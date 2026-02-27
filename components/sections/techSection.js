@@ -31,7 +31,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   row-gap: 1.5rem;
-  padding: 3rem 0 4rem;
+  padding: 3rem 1rem 4rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
 `;
 
 const Title = styled.h2`
@@ -54,7 +56,8 @@ const Rows = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: max-content;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   gap: 2rem;
 `;
@@ -66,6 +69,8 @@ const Row = styled.div`
   gap: 2rem;
   padding: 1.25rem 0;
   border-bottom: 1px solid rgba(102, 102, 102, 0.35);
+  width: 100%;
+  min-width: 0;
 
   &:last-child {
     border-bottom: none;
@@ -81,6 +86,8 @@ const Items = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.1rem;
+  width: 100%;
+  min-width: 0;
 `;
 
 const Label = styled.span`

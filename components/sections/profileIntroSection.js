@@ -9,7 +9,9 @@ const ProfileIntroSection = () => {
     <Container>
       <Title>프로필</Title>
       <SubTitle>{subtitle}</SubTitle>
-      <ProfileSection />
+      <ProfileSectionWrap>
+        <ProfileSection />
+      </ProfileSectionWrap>
     </Container>
   );
 };
@@ -22,6 +24,11 @@ const Container = styled.div`
   row-gap: 1.5rem;
   padding: 3rem 0;
   padding-bottom: 11rem;
+`;
+
+const ProfileSectionWrap = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const Title = styled.h2`

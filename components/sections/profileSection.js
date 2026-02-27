@@ -11,8 +11,8 @@ const ProfileSection = () => {
     { label: "경력", value: career },
     ...(age ? [{ label: "나이", value: age }] : []),
     ...(desiredSalary ? [{ label: "희망 연봉", value: desiredSalary }] : []),
-    ...(workConditions ? [{ label: "희망 근무조건", value: workConditions }] : []),
-    ...(workLocation ? [{ label: "희망 근무지역", value: workLocation }] : []),
+    ...(workConditions ? [{ label: "희망 조건", value: workConditions }] : []),
+    ...(workLocation ? [{ label: "희망 지역", value: workLocation }] : []),
     { label: "연락처", value: contact, href: `tel:${contact.replace(/-/g, "")}` },
     { label: "이메일", value: email, href: `mailto:${email}` },
   ];
@@ -45,9 +45,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(720px, 100%);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
   gap: 2.5rem;
   padding: 0 0.5rem;
+  box-sizing: border-box;
 `;
 
 const ProfileList = styled.dl`
@@ -81,6 +84,13 @@ const Label = styled.dt`
 const Value = styled.dd`
   margin: 0;
   color: ${({ theme }) => theme.fontColor};
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  min-width: 0;
+
+  @media (max-width: 640px) {
+    font-size: 1.35rem;
+  }
 
   a {
     display: inline-flex;
