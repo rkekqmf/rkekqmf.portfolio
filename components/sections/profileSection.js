@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
 import { profileData } from "../../data/profileData";
 
 const ProfileSection = () => {
-  const { name, career, age, contact, email, desiredSalary, workConditions, workLocation } = profileData;
+  const { name, career, age, contact, email, github, desiredSalary, workConditions, workLocation } = profileData;
 
   const rows = [
     { label: "이름", value: name },
@@ -15,6 +16,7 @@ const ProfileSection = () => {
     ...(workLocation ? [{ label: "희망 지역", value: workLocation }] : []),
     { label: "연락처", value: contact, href: `tel:${contact.replace(/-/g, "")}` },
     { label: "이메일", value: email, href: `mailto:${email}` },
+    ...(github ? [{ label: "GitHub", value: github.replace(/^https?:\/\//, ""), href: github }] : []),
   ];
 
   return (
@@ -28,6 +30,7 @@ const ProfileSection = () => {
                 <a href={href} target="_blank" rel="noreferrer">
                   {label === "연락처" && <FontAwesomeIcon icon={faPhone} />}
                   {label === "이메일" && <FontAwesomeIcon icon={faEnvelope} />}
+                  {label === "GitHub" && <FontAwesomeIcon icon={faGithub} />}
                   <span>{value}</span>
                 </a>
               ) : (

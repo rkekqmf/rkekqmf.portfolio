@@ -4,6 +4,7 @@ export const profileData = {
   age: "1994년생",
   contact: "010-6336-7941",
   email: "rkekqmf@gmail.com",
+  github: "https://github.com/rkekqmf",
   desiredSalary: "3900만원 / 협의 가능",
   workConditions: "정규직 / 계약직 / 프리랜서",
   workLocation: "서울 · 수원 · 대구 / 재택·원격",
